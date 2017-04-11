@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PV Node + Vue auth boilerplate</title>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>
+	<meta name="csrf-token" content="<%= csrfToken %>">
+</head>
+<body>
+	<div id="app">
+		
+		<app>
+		
+		<% flashData.flashMessages.forEach(flashMessage => { %>
+			<div class="alert">
+				<p><%= flashMessage %></p>
+			</div>
+		<% }) %>
+
+
+
+		<% flashData.flashErrors.forEach(flashError => { %>
+			<div class="alert alert-danger">
+				<p><%= flashError %></p>
+			</div>
+		<% }) %>
+				
