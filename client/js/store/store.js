@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 const state = {
 	token: null,
 	currentUser: null,
-	polls: null
+	polls: null,
+	pollDetailOptions: null
 };
 
 const getters = {
@@ -16,6 +17,9 @@ const getters = {
   },
   getPolls: state => {
   	return state.polls;
+  },
+  getPollDetailOptions: state => {
+  	return state.pollDetailOptions;
   }
 };
 
@@ -34,11 +38,26 @@ const mutations = {
   'SET_POLLS'(state, payload) {
   	state.polls = payload;
   },
+  'SET_OPTIONS'(state, payload) {
+  	state.pollDetailOptions = payload;
+  },
   'ADD_POLL'(state, payload) {
   	state.polls.push(payload);
   },
   'ADD_OPTION'(state, payload) {
   	state.polls[payload.poll_id - 1].options.push(payload)
+  },
+  'ADD_VOTE'(state, payload) {
+  	console.log(payload)
+  	console.log(payload.option)
+
+  	var poll = state.polls[payload.pollIndex]
+
+  	var option = state.polls[payload.pollIndex].options[payload.index]
+  	
+  	console.log(option)
+
+  	option.votes = payload.option.data.votes;
   }
 }
 
@@ -68,11 +87,24 @@ const actions = {
 				commit('SET_POLLS', polls);
 			}).catch(err => polls = null);
 	},
+	fetchPollDetailOptions({commit}, id) {
+		let options = null;
+
+		axios.get(`/polls/${id}`)
+			.then(({data}) => {
+				options = data.options;
+				commit('SET_OPTIONS', options);
+			}).catch(err => options = null);
+	},
 	addPoll({commit}, payload) {
 		commit('ADD_POLL', payload.data);
 	},
 	addOption({commit}, payload) {
 		commit('ADD_OPTION', payload.data);
+	},
+	addVote({commit}, payload) {
+		console.log(payload)
+		commit('ADD_VOTE', payload);
 	}
 }
 

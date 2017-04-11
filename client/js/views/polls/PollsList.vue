@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<router-link v-for="poll in polls" :poll="poll" :key="poll.id"
-			:to="'/polls/' + poll.id">
+		<router-link v-for="(poll, index) in polls" :poll="poll" :key="poll.id"
+			:to="'/polls/' + index">
 			<div class="well">
 				<h1>{{ poll.title }}</h1>
 			</div>		

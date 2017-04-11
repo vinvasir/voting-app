@@ -10,7 +10,7 @@
 			</div>
 		</div>
 
-		<poll-option v-for="option in poll.options" :option="option" key="option.id">
+		<poll-option v-for="(option, i) in options" :option="option" :index="i" key="option.id" :poll-index="index">
 		</poll-option>
 	</div>
 </template>
@@ -29,11 +29,17 @@
 				return parseInt(this.$route.params.id);
 			},
 			poll() {
-				return this.$store.getters.getPolls[this.index - 1];
+				return this.$store.getters.getPolls[this.index];
+			},
+			options() {
+				return this.$store.getters.getPollDetailOptions;
 			},
 			currentUser() {
 				return this.$store.getters.getCurrentUser;
 			}
+		},
+		created() {
+			this.$store.dispatch('fetchPollDetailOptions', this.poll.id);
 		}
 	}
 </script>

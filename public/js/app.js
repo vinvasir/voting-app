@@ -12211,7 +12211,8 @@ var routes = [{
 var state = {
 	token: null,
 	currentUser: null,
-	polls: null
+	polls: null,
+	pollDetailOptions: null
 };
 
 var getters = {
@@ -12223,6 +12224,9 @@ var getters = {
 	},
 	getPolls: function getPolls(state) {
 		return state.polls;
+	},
+	getPollDetailOptions: function getPollDetailOptions(state) {
+		return state.pollDetailOptions;
 	}
 };
 
@@ -12241,11 +12245,26 @@ var mutations = {
 	'SET_POLLS': function SET_POLLS(state, payload) {
 		state.polls = payload;
 	},
+	'SET_OPTIONS': function SET_OPTIONS(state, payload) {
+		state.pollDetailOptions = payload;
+	},
 	'ADD_POLL': function ADD_POLL(state, payload) {
 		state.polls.push(payload);
 	},
 	'ADD_OPTION': function ADD_OPTION(state, payload) {
 		state.polls[payload.poll_id - 1].options.push(payload);
+	},
+	'ADD_VOTE': function ADD_VOTE(state, payload) {
+		console.log(payload);
+		console.log(payload.option);
+
+		var poll = state.polls[payload.pollIndex];
+
+		var option = state.polls[payload.pollIndex].options[payload.index];
+
+		console.log(option);
+
+		option.votes = payload.option.data.votes;
 	}
 };
 
@@ -12289,15 +12308,35 @@ var actions = {
 			return polls = null;
 		});
 	},
-	addPoll: function addPoll(_ref7, payload) {
+	fetchPollDetailOptions: function fetchPollDetailOptions(_ref7, id) {
 		var commit = _ref7.commit;
+
+		var options = null;
+
+		axios.get('/polls/' + id).then(function (_ref8) {
+			var data = _ref8.data;
+
+			options = data.options;
+			commit('SET_OPTIONS', options);
+		}).catch(function (err) {
+			return options = null;
+		});
+	},
+	addPoll: function addPoll(_ref9, payload) {
+		var commit = _ref9.commit;
 
 		commit('ADD_POLL', payload.data);
 	},
-	addOption: function addOption(_ref8, payload) {
-		var commit = _ref8.commit;
+	addOption: function addOption(_ref10, payload) {
+		var commit = _ref10.commit;
 
 		commit('ADD_OPTION', payload.data);
+	},
+	addVote: function addVote(_ref11, payload) {
+		var commit = _ref11.commit;
+
+		console.log(payload);
+		commit('ADD_VOTE', payload);
 	}
 };
 
@@ -12643,11 +12682,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return parseInt(this.$route.params.id);
 		},
 		poll: function poll() {
-			return this.$store.getters.getPolls[this.index - 1];
+			return this.$store.getters.getPolls[this.index];
+		},
+		options: function options() {
+			return this.$store.getters.getPollDetailOptions;
 		},
 		currentUser: function currentUser() {
 			return this.$store.getters.getCurrentUser;
 		}
+	},
+	created: function created() {
+		this.$store.dispatch('fetchPollDetailOptions', this.poll.id);
 	}
 });
 
@@ -13307,12 +13352,12 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._l((_vm.polls), function(poll) {
+  return _c('div', [_vm._l((_vm.polls), function(poll, index) {
     return _c('router-link', {
       key: poll.id,
       attrs: {
         "poll": poll,
-        "to": '/polls/' + poll.id
+        "to": '/polls/' + index
       }
     }, [_c('div', {
       staticClass: "well"
@@ -13452,11 +13497,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "poll-id": _vm.index
     }
-  })], 1) : _vm._e()]), _vm._v(" "), _vm._l((_vm.poll.options), function(option) {
+  })], 1) : _vm._e()]), _vm._v(" "), _vm._l((_vm.options), function(option, i) {
     return _c('poll-option', {
       key: "option.id",
       attrs: {
-        "option": option
+        "option": option,
+        "index": i,
+        "poll-index": _vm.index
       }
     })
   })], 2)
@@ -14327,16 +14374,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		option: {
 			type: Object,
 			required: true
+		},
+		index: {
+			type: Number,
+			required: true
+		},
+		pollIndex: {
+			type: Number,
+			required: true
 		}
 	},
 	methods: {
-		addVote: function addVote() {
+		vote: function vote() {
 			var _this = this;
 
-			axios.post('/options/' + this.option.id + '/vote').then(function (_ref) {
+			axios.post('/options/' + this.option.id + '/vote', { votes: this.option.votes + 1 }).then(function (_ref) {
 				var data = _ref.data;
 
-				_this.$store.dispatch('addVote', data);
+				_this.$store.dispatch('addVote', {
+					option: data,
+					index: _this.index,
+					pollIndex: _this.pollIndex
+				});
 			}).catch(function (err) {
 				_this.error = err.response.data;
 			});
@@ -14386,7 +14445,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "well",
     on: {
-      "click": _vm.addVote
+      "click": _vm.vote
     }
   }, [_c('h4', [_vm._v(_vm._s(_vm.option.name))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.option.votes) + " votes")])])
 },staticRenderFns: []}

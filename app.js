@@ -15,6 +15,7 @@ const configurePassportLocal = require('./config/passport-local-config');
 const authController = require('./controllers/auth-controller');
 const userController = require('./controllers/user-controller');
 const pollController = require('./controllers/poll-controller');
+const optionController = require('./controllers/option-controller');
 
 const app = express();
 
@@ -69,16 +70,16 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-	console.log(res.locals.user);
-	console.log(res.locals.flashData);
-	console.log(req.flash());
+	// console.log(res.locals.user);
+	// console.log(res.locals.flashData);
+	// console.log(req.flash());
 	next();
 });
 
 app.use('/auth', authController);
 app.use('/users', userController);
 app.use('/polls', pollController);
-
+app.use('/options', optionController);
 
 app.get('/', (req, res) => {
 	res.render('home');
