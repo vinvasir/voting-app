@@ -14333,7 +14333,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		addVote: function addVote() {
 			var _this = this;
 
-			axios.post('/options/' + option.id + '/vote').then(function (_ref) {
+			axios.post('/options/' + this.option.id + '/vote').then(function (_ref) {
 				var data = _ref.data;
 
 				_this.$store.dispatch('addVote', data);

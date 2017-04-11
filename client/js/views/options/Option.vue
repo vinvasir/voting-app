@@ -15,7 +15,7 @@
 		},
 		methods: {
 			addVote() {
-				axios.post(`/options/${option.id}/vote`)
+				axios.post(`/options/${this.option.id}/vote`)
 					.then(({data}) => {
 						this.$store.dispatch('addVote', data)
 					}).catch(err => {
