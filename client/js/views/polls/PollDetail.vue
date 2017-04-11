@@ -5,15 +5,18 @@
 		<p>{{ poll.body }}</p>
 
 		<div v-if="currentUser === poll.user.username">
-			<option-form></option-form>
+			<option-form :poll-id="index"></option-form>
 		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import OptionForm from '../options/OptionForm.vue'
-	
+
 	export default {
+		components: {
+			OptionForm
+		},
 		computed: {
 			index() {
 				return parseInt(this.$route.params.id);

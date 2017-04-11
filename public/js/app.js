@@ -12243,6 +12243,9 @@ var mutations = {
 	},
 	'ADD_POLL': function ADD_POLL(state, payload) {
 		state.polls.push(payload);
+	},
+	'ADD_OPTION': function ADD_OPTION(state, payload) {
+		state.polls[payload.poll_id - 1].options.push(payload);
 	}
 };
 
@@ -12290,6 +12293,11 @@ var actions = {
 		var commit = _ref7.commit;
 
 		commit('ADD_POLL', payload.data);
+	},
+	addOption: function addOption(_ref8, payload) {
+		var commit = _ref8.commit;
+
+		commit('ADD_OPTION', payload.data);
 	}
 };
 
@@ -12553,8 +12561,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		pollId: {
+			type: Number,
+			required: true
+		}
+	},
+	data: function data() {
+		return {
+			newOption: {},
+			error: null
+		};
+	},
+
+	methods: {
+		handleSubmit: function handleSubmit() {
+			var _this = this;
+
+			axios.post('/polls/' + this.pollId + '/options', this.newOption).then(function (_ref) {
+				var data = _ref.data;
+
+				_this.$store.dispatch('addOption', data);
+			}).catch(function (err) {
+				_this.error = err.response.data;
+			});
+		}
+	}
+});
 
 /***/ }),
 /* 42 */
@@ -12580,6 +12626,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: {
+		OptionForm: __WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue___default.a
+	},
 	computed: {
 		index: function index() {
 			return parseInt(this.$route.params.id);
@@ -13192,7 +13241,49 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('form')
+  return _c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.handleSubmit($event)
+      }
+    }
+  }, [_vm._l((_vm.error), function(value, key) {
+    return (_vm.error) ? _c('div', {
+      staticClass: "alert alert-danger"
+    }, [_vm._v("\n\t\t" + _vm._s(key) + " : " + _vm._s(value) + "\n\t")]) : _vm._e()
+  }), _vm._v(" "), _c('h3', [_vm._v("Add an Option To Your Poll:")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Option Name:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newOption.name),
+      expression: "newOption.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "name"
+    },
+    domProps: {
+      "value": (_vm.newOption.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newOption.name = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Add Option")])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -13348,7 +13439,11 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "well"
-  }, [_c('h2', [_vm._v(_vm._s(_vm.poll.title))]), _vm._v(" "), _c('i', [_vm._v("By " + _vm._s(_vm.poll.user.username))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.poll.body))]), _vm._v(" "), (_vm.currentUser === _vm.poll.user.username) ? _c('div', [_c('option-form')], 1) : _vm._e()])
+  }, [_c('h2', [_vm._v(_vm._s(_vm.poll.title))]), _vm._v(" "), _c('i', [_vm._v("By " + _vm._s(_vm.poll.user.username))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.poll.body))]), _vm._v(" "), (_vm.currentUser === _vm.poll.user.username) ? _c('div', [_c('option-form', {
+    attrs: {
+      "poll-id": _vm.index
+    }
+  })], 1) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

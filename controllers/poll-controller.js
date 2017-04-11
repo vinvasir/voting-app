@@ -8,7 +8,7 @@ router.use(require('connect-flash')());
 const Poll = require('../models/poll');
 
 router.get('/', (req, res) => {
-	Poll.fetchAll({withRelated: ['user']})
+	Poll.fetchAll({withRelated: ['user', 'options']})
 		.then(polls => {
 			res.status(200).json({polls})
 		}).catch(e => console.error(e));
