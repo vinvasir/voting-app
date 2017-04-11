@@ -12153,6 +12153,9 @@ var routes = [{
 }, {
 	path: '/polls',
 	component: __webpack_require__(58)
+}, {
+	path: '/polls/:id',
+	component: __webpack_require__(56)
 }];
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -12519,10 +12522,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: {
-		poll: {
-			type: Object,
-			required: true
+	computed: {
+		index: function index() {
+			return parseInt(this.$route.params.id);
+		},
+		poll: function poll() {
+			return this.$store.getters.getPolls[this.index - 1];
 		}
 	}
 });
@@ -12587,6 +12592,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PollDetail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__PollDetail__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PollForm__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PollForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__PollForm__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -13122,12 +13132,15 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_vm._l((_vm.polls), function(poll) {
-    return _c('poll-detail', {
+    return _c('router-link', {
       key: poll.id,
       attrs: {
-        "poll": poll
+        "poll": poll,
+        "to": '/polls/' + poll.id
       }
-    })
+    }, [_c('div', {
+      staticClass: "well"
+    }, [_c('h1', [_vm._v(_vm._s(poll.title))])])])
   }), _vm._v(" "), _c('poll-form')], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true

@@ -20,6 +20,10 @@ let routes = [
 	{
 		path: '/polls',
 		component: require('./views/polls/PollsList.vue')
+	},
+	{
+		path: '/polls/:id',
+		component: require('./views/polls/PollDetail.vue')
 	}
 ];
 

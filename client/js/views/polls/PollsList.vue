@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<poll-detail v-for="poll in polls" :poll="poll" :key="poll.id"></poll-detail>
+		<router-link v-for="poll in polls" :poll="poll" :key="poll.id"
+			:to="'/polls/' + poll.id">
+			<div class="well">
+				<h1>{{ poll.title }}</h1>
+			</div>		
+		</router-link>
 
 		<poll-form></poll-form>
 	</div>

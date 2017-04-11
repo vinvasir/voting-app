@@ -7,10 +7,12 @@
 
 <script type="text/javascript">
 	export default {
-		props: {
-			poll: {
-				type: Object,
-				required: true
+		computed: {
+			index() {
+				return parseInt(this.$route.params.id);
+			},
+			poll() {
+				return this.$store.getters.getPolls[this.index - 1];
 			}
 		}
 	}
