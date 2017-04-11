@@ -26,11 +26,12 @@
 				axios
 					.post(`/options/${this.option.id}/vote`, {votes: this.option.votes + 1})
 					.then(({data}) => {
-						this.$store.dispatch('addVote', {
-							option: data, 
-							index: this.index, 
-							pollIndex: this.pollIndex
-						});
+						// this.$store.dispatch('addVote', {
+						// 	option: data, 
+						// 	index: this.index, 
+						// 	pollIndex: this.pollIndex
+						// });
+						this.$store.dispatch('fetchPollDetailOptions', this.option.poll_id);
 					}).catch(err => {
 						this.error = err.response.data;
 					});

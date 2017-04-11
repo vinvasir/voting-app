@@ -46,18 +46,6 @@ const mutations = {
   },
   'ADD_OPTION'(state, payload) {
   	state.polls[payload.poll_id - 1].options.push(payload)
-  },
-  'ADD_VOTE'(state, payload) {
-  	console.log(payload)
-  	console.log(payload.option)
-
-  	var poll = state.polls[payload.pollIndex]
-
-  	var option = state.polls[payload.pollIndex].options[payload.index]
-  	
-  	console.log(option)
-
-  	option.votes = payload.option.data.votes;
   }
 }
 
@@ -101,10 +89,6 @@ const actions = {
 	},
 	addOption({commit}, payload) {
 		commit('ADD_OPTION', payload.data);
-	},
-	addVote({commit}, payload) {
-		console.log(payload)
-		commit('ADD_VOTE', payload);
 	}
 }
 
