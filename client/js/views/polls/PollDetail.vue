@@ -10,18 +10,19 @@
 			</div>
 		</div>
 
-		<div class="well" v-for="option in poll.options">
-			<h4>{{ option.name }}</h4>
-		</div>
+		<poll-option v-for="option in poll.options" :option="option" key="option.id">
+		</poll-option>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import OptionForm from '../options/OptionForm.vue'
+	import PollOption from '../options/Option.vue'
 
 	export default {
 		components: {
-			OptionForm
+			OptionForm,
+			PollOption
 		},
 		computed: {
 			index() {

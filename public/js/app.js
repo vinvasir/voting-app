@@ -12610,6 +12610,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__options_Option_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__options_Option_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__options_Option_vue__);
 //
 //
 //
@@ -12627,13 +12629,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
-		OptionForm: __WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue___default.a
+		OptionForm: __WEBPACK_IMPORTED_MODULE_0__options_OptionForm_vue___default.a,
+		PollOption: __WEBPACK_IMPORTED_MODULE_1__options_Option_vue___default.a
 	},
 	computed: {
 		index: function index() {
@@ -13450,9 +13453,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "poll-id": _vm.index
     }
   })], 1) : _vm._e()]), _vm._v(" "), _vm._l((_vm.poll.options), function(option) {
-    return _c('div', {
-      staticClass: "well"
-    }, [_c('h4', [_vm._v(_vm._s(option.name))])])
+    return _c('poll-option', {
+      key: "option.id",
+      attrs: {
+        "option": option
+      }
+    })
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -14300,6 +14306,97 @@ var index_esm = {
 
 module.exports = __webpack_require__(13);
 
+
+/***/ }),
+/* 74 */,
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		option: {
+			type: Object,
+			required: true
+		}
+	},
+	methods: {
+		addVote: function addVote() {
+			var _this = this;
+
+			axios.post('/options/' + option.id + '/vote').then(function (_ref) {
+				var data = _ref.data;
+
+				_this.$store.dispatch('addVote', data);
+			}).catch(function (err) {
+				_this.error = err.response.data;
+			});
+		}
+	}
+});
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(75),
+  /* template */
+  __webpack_require__(77),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/pvasireddy/Desktop/FOSS/voting-app/client/js/views/options/Option.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Option.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b3dc34c2", Component.options)
+  } else {
+    hotAPI.reload("data-v-b3dc34c2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "well",
+    on: {
+      "click": _vm.addVote
+    }
+  }, [_c('h4', [_vm._v(_vm._s(_vm.option.name))]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.option.votes) + " votes")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b3dc34c2", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
