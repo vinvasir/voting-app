@@ -17,4 +17,43 @@ describe('Option #create', () => {
 					})
 			}).catch(err => done(err));
 	});
+
+	it('should belong to a poll', done => {
+		Poll.forge({
+				title: 'my cool title',
+				body: faker.lorem.paragraph()
+			}).save()
+			.then(poll => {
+				let option = {name: faker.lorem.word(), poll_id: 1};
+
+				Option.forge(option).save()
+					.then(option => {
+						option.fetch({withRelated: ['poll']})
+							.then(optionWithPoll => {
+								let pollTitle = optionWithPoll.relations.poll.attributes.title;
+
+								console.log(pollTitle)
+
+								expect(pollTitle).to.equal('my cool title');
+
+								done();
+							});
+					}).catch(err => done(err));
+			})
+
+		
+
+		// promises.push(Option.forge(option).save());
+		
+		// Promise.all(promises)
+		// 	.then(option => {
+		// 		console.log(option)
+		// 		Option.forge(option).fetch({withRelated: ['post']})
+		// 			.then(optionWithPost => {
+		// 				expect(optionWithPost.post.attributes.title).to.equal('my cool title');
+
+		// 				done();
+		// 			});
+		// 	}).catch(err => done(err));
+	});
 });
