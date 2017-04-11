@@ -12670,7 +12670,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			axios.post('/polls/' + this.pollId + '/options', this.newOption).then(function (_ref) {
 				var data = _ref.data;
 
-				_this.$store.dispatch('addOption', { option: data, pollIndex: _this.pollIndex });
+				_this.$store.dispatch('fetchPollDetailOptions', _this.pollId);
 			}).catch(function (err) {
 				_this.error = err.response.data;
 			});

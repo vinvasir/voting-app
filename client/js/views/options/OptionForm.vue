@@ -37,7 +37,7 @@
 			handleSubmit() {
 				axios.post(`/polls/${this.pollId}/options`, this.newOption)
 					.then(({data}) => {
-						this.$store.dispatch('addOption', {option: data, pollIndex: this.pollIndex})
+						this.$store.dispatch('fetchPollDetailOptions', this.pollId);
 					}).catch(err => {
 						this.error = err.response.data;
 					});
