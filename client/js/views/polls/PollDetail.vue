@@ -1,11 +1,17 @@
 <template>
-	<div class="well">
-		<h2>{{ poll.title }}</h2>
-		<i>By {{ poll.user.username }}</i>
-		<p>{{ poll.body }}</p>
+	<div>
+		<div class="well">
+			<h2>{{ poll.title }}</h2>
+			<i>By {{ poll.user.username }}</i>
+			<p>{{ poll.body }}</p>
 
-		<div v-if="currentUser === poll.user.username">
-			<option-form :poll-id="index"></option-form>
+			<div v-if="currentUser === poll.user.username">
+				<option-form :poll-id="index"></option-form>
+			</div>
+		</div>
+
+		<div class="well" v-for="option in poll.options">
+			<h4>{{ option.name }}</h4>
 		</div>
 	</div>
 </template>

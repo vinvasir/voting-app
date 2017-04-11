@@ -37,7 +37,7 @@ router.post('/', localAuth, (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	Poll.forge({id: req.params.id}).fetch({withRelated: ['user']})
+	Poll.forge({id: req.params.id}).fetch({withRelated: ['user', 'options']})
 		.then(poll => res.status(200).json({
 			poll: poll.omit('user'), 
 			user: poll.relations.user.omit('password')
