@@ -6,7 +6,7 @@
 			<p>{{ poll.body }}</p>
 
 			<div v-if="currentUser === poll.user.username">
-				<option-form :poll-id="index"></option-form>
+				<option-form :poll-id="poll.id"></option-form>
 			</div>
 		</div>
 
