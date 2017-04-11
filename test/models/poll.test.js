@@ -25,7 +25,7 @@ describe('Poll #create', () => {
 
 		Poll.forge(badPoll).fetch()
 			.then(poll => {
-				expect(post).to.equal(null);
+				expect(poll).to.equal(null);
 			})
 	})
 
@@ -61,7 +61,7 @@ describe('Poll #all', () => {
 		}).catch(err => done(err));
 	});
 
-	it('should return all posts', done => {
+	it('should return all polls', done => {
 		Poll.fetchAll()
 			.then(polls => {
 				expect(polls.length).to.equal(5);
