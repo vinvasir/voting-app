@@ -12253,18 +12253,6 @@ var mutations = {
 	},
 	'ADD_OPTION': function ADD_OPTION(state, payload) {
 		state.polls[payload.poll_id - 1].options.push(payload);
-	},
-	'ADD_VOTE': function ADD_VOTE(state, payload) {
-		console.log(payload);
-		console.log(payload.option);
-
-		var poll = state.polls[payload.pollIndex];
-
-		var option = state.polls[payload.pollIndex].options[payload.index];
-
-		console.log(option);
-
-		state.polls[payload.pollIndex].options[payload.index].votes = payload.option.data.votes;
 	}
 };
 
@@ -12331,12 +12319,6 @@ var actions = {
 		var commit = _ref10.commit;
 
 		commit('ADD_OPTION', payload.data);
-	},
-	addVote: function addVote(_ref11, payload) {
-		var commit = _ref11.commit;
-
-		console.log(payload);
-		commit('ADD_VOTE', payload);
 	}
 };
 
@@ -13598,7 +13580,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "well"
   }, [_c('h2', [_vm._v(_vm._s(_vm.poll.title))]), _vm._v(" "), _c('i', [_vm._v("By " + _vm._s(_vm.poll.user.username))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.poll.body))]), _vm._v(" "), (_vm.currentUser === _vm.poll.user.username) ? _c('div', [_c('option-form', {
     attrs: {
-      "poll-id": _vm.index
+      "poll-id": _vm.poll.id
     }
   })], 1) : _vm._e()]), _vm._v(" "), _vm._l((_vm.options), function(option, i) {
     return _c('poll-option', {
