@@ -12252,7 +12252,9 @@ var mutations = {
 		state.polls.push(payload);
 	},
 	'ADD_OPTION': function ADD_OPTION(state, payload) {
-		state.polls[payload.poll_id - 1].options.push(payload);
+		console.log(payload);
+		console.log(payload.option.data);
+		state.polls[payload.pollIndex].options.push(payload.option.data);
 	}
 };
 
@@ -12318,7 +12320,7 @@ var actions = {
 	addOption: function addOption(_ref10, payload) {
 		var commit = _ref10.commit;
 
-		commit('ADD_OPTION', payload.data);
+		commit('ADD_OPTION', payload);
 	}
 };
 
@@ -12648,6 +12650,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		pollId: {
 			type: Number,
 			required: true
+		},
+		pollIndex: {
+			type: Number,
+			required: true
 		}
 	},
 	data: function data() {
@@ -12664,7 +12670,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			axios.post('/polls/' + this.pollId + '/options', this.newOption).then(function (_ref) {
 				var data = _ref.data;
 
-				_this.$store.dispatch('addOption', data);
+				_this.$store.dispatch('addOption', { option: data, pollIndex: _this.pollIndex });
 			}).catch(function (err) {
 				_this.error = err.response.data;
 			});
@@ -13580,7 +13586,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "well"
   }, [_c('h2', [_vm._v(_vm._s(_vm.poll.title))]), _vm._v(" "), _c('i', [_vm._v("By " + _vm._s(_vm.poll.user.username))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.poll.body))]), _vm._v(" "), (_vm.currentUser === _vm.poll.user.username) ? _c('div', [_c('option-form', {
     attrs: {
-      "poll-id": _vm.poll.id
+      "poll-id": _vm.poll.id,
+      "poll-index": _vm.index
     }
   })], 1) : _vm._e()]), _vm._v(" "), _vm._l((_vm.options), function(option, i) {
     return _c('poll-option', {

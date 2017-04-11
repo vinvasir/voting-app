@@ -21,6 +21,10 @@
 			pollId: {
 				type: Number,
 				required: true
+			},
+			pollIndex: {
+				type: Number,
+				required: true
 			}
 		},
 		data() {
@@ -33,7 +37,7 @@
 			handleSubmit() {
 				axios.post(`/polls/${this.pollId}/options`, this.newOption)
 					.then(({data}) => {
-						this.$store.dispatch('addOption', data)
+						this.$store.dispatch('addOption', {option: data, pollIndex: this.pollIndex})
 					}).catch(err => {
 						this.error = err.response.data;
 					});

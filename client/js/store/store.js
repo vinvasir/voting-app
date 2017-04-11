@@ -45,7 +45,9 @@ const mutations = {
   	state.polls.push(payload);
   },
   'ADD_OPTION'(state, payload) {
-  	state.polls[payload.poll_id - 1].options.push(payload)
+  	console.log(payload)
+  	console.log(payload.option.data)
+  	state.polls[payload.pollIndex].options.push(payload.option.data)
   }
 }
 
@@ -88,7 +90,7 @@ const actions = {
 		commit('ADD_POLL', payload.data);
 	},
 	addOption({commit}, payload) {
-		commit('ADD_OPTION', payload.data);
+		commit('ADD_OPTION', payload);
 	}
 }
 
