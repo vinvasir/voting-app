@@ -6,6 +6,7 @@ router.use(express.static('public'));
 router.use(require('connect-flash')());
 
 const Poll = require('../models/poll');
+const Option = require('../models/option');
 
 router.get('/', (req, res) => {
 	Poll.fetchAll({withRelated: ['user', 'options']})
@@ -42,6 +43,13 @@ router.get('/:id', (req, res) => {
 			user: poll.relations.user.omit('password')
 		}))
 		.catch(e => console.error(e));
-})
+});
+
+router.post('/:id/options', (req, res) => {
+	Option.forge({poll_id: req.params.id, name: req.body.name})
+		.save()
+		.then(option => res.status(200).json({data: option}))
+		.catch(e => res.json({msg: req.flash('error')}));
+});
 
 module.exports = router;
